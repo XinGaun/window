@@ -1,0 +1,12 @@
+[{
+	"id":1,
+	 "text":"班级管理",
+	 "iconCls":"icon-save",
+	 "children":[{
+	 	"text":"SEO设置",    
+        "checked":true,
+        "attributes":{ 
+            "url":"AdmStu.jsp"
+        }  
+	 }]
+}]

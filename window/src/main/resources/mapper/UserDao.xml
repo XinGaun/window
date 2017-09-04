@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.guanDao.UserDaoPort">
+	<!-- 查询所有用户 -->	
+	<select id="queryUser" resultType="com.entity.UserTab" parameterType="com.entity.UserTab">
+		select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark from user_tab
+	</select>
+	<!-- 插入用户 -->
+	<insert id="addUser" parameterType="com.entity.UserTab">
+		insert into user_tab(user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark) values(seq_user.nextval,#{userName},#{userPassword},#{userSalary},#{userSex},#{userCall},#{identityCard},#{userRemark})
+	</insert>
+	<!-- 修改用户信息 -->
+	<update id="updateUser" parameterType="com.entity.UserTab" >
+		update user_tab set user_name = #{userName},user_salary=#{userSalary},user_sex=#{userSex},user_call=#{userCall},user_remark=#{userRemark},identity_card=#{identityCard} where user_id = #{userId}
+	</update>
+	<!-- 根据用户账号查询用户 -->
+	<select id="finUserByUsername" parameterType="String" resultType="com.entity.UserTab">
+			select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark from user_tab where user_call = #{username}
+	</select>
+</mapper>

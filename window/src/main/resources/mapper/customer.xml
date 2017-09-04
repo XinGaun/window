@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.fyhDao.CustomerDao">	
+	<!-- 查询用户表全部信息 -->
+	<select id="getCustomer" resultType="com.entity.Customer">
+		select * from customer
+	</select>
+	<!-- 插入用户 -->
+	<insert id="saveCustomer" parameterType="com.entity.Customer">
+		insert into customer values(customerID.nextval,#{phoneNumber},#{passw})
+	</insert>
+	<!-- 根据手机号查询是否有数据 -->
+	<select id="getCustomerID" resultType="Customer" parameterType="com.entity.Customer">
+		select * from customer where phoneNumber = #{phoneNumber}
+	</select>
+</mapper>
