@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 角色接口实现类 -->
+<mapper namespace="com.dao.guanDao.TbRoleDaoPort">	
+	<!-- 查询角色信息 -->
+	<select id="querytbRole" resultType="com.entity.TbRole" parameterType="com.entity.TbRole">
+		select role_id,role_name,user_role_keywords,user_role_status from tb_role where role_id>0
+		<if test="roleId!=0">  
+			 and role_id != #{roleId}
+		</if>
+		<if test="roleName!='0'.toString()">
+			and role_name = #{roleName}
+		</if>
+		<if test="userRoleKeywords!='0'.toString()">
+			and user_role_keywords = #{userRoleKeywords}
+		</if>
+	</select>
+	<!-- 插入一个角色 -->
+	<insert id="addtbRole" parameterType="com.entity.TbRole">
+		insert into tb_role values(seq_role.nextval,#{roleName},#{userRoleKeywords},#{userRoleStatus})
+	</insert>
+	<!-- 修改角色信息 -->
+	<update id="updateRole" parameterType="com.entity.TbRole">
+		update tb_role tr set tr.role_name = #{roleName},tr.user_role_keywords=#{userRoleKeywords},tr.user_role_status=#{userRoleStatus} where tr.role_id=#{roleId}	
+	</update>
+	<!-- 添加角色权限 -->
+	<insert id="addTbRolePower" parameterType="map">
+		insert into tb_role_power(role_id,power_id) values(#{roleId},#{powerId})
+	</insert>
+	<!-- 删除角色权限 -->
+	<delete id="deleteRolePower" parameterType="java.lang.Integer">
+		delete tb_role_power where role_id = #{roleId} 
+	</delete>
+	<!-- 根据角色名进行模糊查询 -->
+	<select id="queryRoleName" parameterType="com.entity.TbRole" resultType="com.entity.TbRole">
+		select tb.role_id,tb.role_name,tb.user_role_keywords,tb.user_role_status from tb_role tb  
+		<if test="roleName!='0'.toString()">
+			where role_name like '%'||#{roleName}||'%'
+		</if>
+	</select>
+</mapper>
