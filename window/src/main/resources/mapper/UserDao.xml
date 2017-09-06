@@ -5,18 +5,55 @@
 <mapper namespace="com.dao.guanDao.UserDaoPort">
 	<!-- 查询所有用户 -->	
 	<select id="queryUser" resultType="com.entity.UserTab" parameterType="com.entity.UserTab">
-		select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark from user_tab
+		select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark,user_status from user_tab
 	</select>
 	<!-- 插入用户 -->
-	<insert id="addUser" parameterType="com.entity.UserTab">
-		insert into user_tab(user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark) values(seq_user.nextval,#{userName},#{userPassword},#{userSalary},#{userSex},#{userCall},#{identityCard},#{userRemark})
+	<insert id="addUser" useGeneratedKeys="false" parameterType="com.entity.UserTab">
+		insert into user_tab(user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark,user_status) values(seq_user.nextval,#{userName},#{userPassword},#{userSalary},#{userSex},#{userCall},#{identityCard},#{userRemark},#{userStatus})
 	</insert>
 	<!-- 修改用户信息 -->
 	<update id="updateUser" parameterType="com.entity.UserTab" >
-		update user_tab set user_name = #{userName},user_salary=#{userSalary},user_sex=#{userSex},user_call=#{userCall},user_remark=#{userRemark},identity_card=#{identityCard} where user_id = #{userId}
+		update user_tab set user_name = #{userName},user_salary=#{userSalary},user_sex=#{userSex},user_call=#{userCall},user_remark=#{userRemark},identity_card=#{identityCard},user_status=#{userStatus} where user_id = #{userId}
 	</update>
 	<!-- 根据用户账号查询用户 -->
 	<select id="finUserByUsername" parameterType="String" resultType="com.entity.UserTab">
-			select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark from user_tab where user_call = #{username}
+			select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark from user_tab where user_call = #{username} and user_status !='禁用'
+	</select>
+	<!-- 根据用户手机号查询用户信息 -->
+	<select id="queryUserCall" parameterType="com.entity.UserTab" resultType="com.entity.UserTab">
+			select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark from user_tab where user_id >0
+		<if test="userCall!='0'.toString()">
+			and user_call = #{userCall}
+		</if>
+		<if test="identityCard!='0'.toString()">
+			and identity_card = #{identityCard}
+		</if>
+		<if test="userId!=0">
+			and user_id!=#{userId}
+		</if>
+	</select>
+	<!-- 查询角色信息生成角色树 -->
+	<select id="queryTbRole" resultType="map">
+		select role_id,role_name,user_role_keywords,user_role_status from tb_role where role_id>0 and user_role_status!='禁用'
+	</select>
+	<!-- 添加员工角色关联表 -->
+	<insert id="addTbUserRole" parameterType="map">
+		insert into tb_user_role(user_id,role_id) values(#{userId},#{roleId})
+	</insert>
+	<!-- 根据员工ID删除相关角色员工表的信息 -->
+	<delete id="deleteUserRole" parameterType="map">
+		delete tb_user_role tur where tur.user_id = #{userId}
+	</delete>
+	<!-- 根据员工ID和角色ID查询是否被赋予这个角色 -->
+	<select id="queryUserRole" parameterType="map" resultType="map">
+		select * from tb_user_role where user_id=#{userId} and role_id = #{id}
+	</select>
+	<!-- 根据员工手机号去查询相关权限和角色 -->
+	<select id="queryCallUserRolePower" resultType="map" parameterType="com.entity.UserTab">
+		select * from user_tab utab,tb_user_role  urtb,tb_role rtb,tb_role_power rptb,tb_power ptb where utab.user_id=urtb.user_id and rtb.role_id = urtb.role_id and rtb.role_id = rptb.role_id and ptb.power_id=rptb.power_id and utab.user_status!='禁用' and utab.user_call=#{userCall}
+	</select>
+	<!-- 根据员工名称进行模糊查询 -->
+	<select id="queryDimUserName" resultType="com.entity.UserTab" parameterType="com.entity.UserTab">
+		select user_id,user_name,user_password,user_salary,user_sex,user_call,identity_card,user_remark,user_status from user_tab where user_name like '%'||#{userName}||'%'
 	</select>
 </mapper>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,10 +21,16 @@
 			<div id="wu-jueses">
 				<div class="wu-toolbar-search"
 					style="padding-top: 20px; height: 50px;">
+					<shiro:hasPermission name="updateRole">
 					<a id="UpdateTbRole" href="#" class="easyui-linkbutton"
-						data-options="iconCls:'icon-man'">修改角色</a> <a id="addTbRole"
+						data-options="iconCls:'icon-man'">修改角色</a>
+						</shiro:hasPermission>
+							<shiro:hasPermission name="addRole">
+						 <a id="addTbRole"
 						href="#" class="easyui-linkbutton"
-						data-options="iconCls:'icon-man'">添加角色</a> <label>角色名称：</label><input
+						data-options="iconCls:'icon-man'">添加角色</a>
+						</shiro:hasPermission>
+						 <label>角色名称：</label><input
 						class="wu-text" style="width: 100px" id="roleNameQuery"> <a href="#"
 						class="easyui-linkbutton" iconCls="icon-search" id="roleNameQueryGO">开始检索</a>
 				</div>
@@ -159,7 +166,8 @@
 			var roleName = $("#jueseName").val();
 			var userRoleKeywords = $("#jueseKey").val();
 			var userRoleStatus = $("#jueseStu").val();
-			var rows = $('#roleupdate').tree('getChecked');
+			var rows = $('#roleupdate').tree('getChecked',['checked','indeterminate']);
+			console.info(rows);
 			if (roleName == "" || userRoleKeywords == "" || $("#errorjueseName").html()!=""||$("#errorjueseKey").html()!="") {
 				return false;				
 			}
@@ -240,7 +248,7 @@
 					var roleName = $("#rolename").val();
 					var userRoleKeywords = $("#rolekey").val();
 					var userRoleStatus = $("#rolestu").val();
-					var rows = $('#roleadd').tree('getChecked');
+					var rows = $('#roleadd').tree('getChecked',['checked','indeterminate']);
 					//alert(rows[0].id);
 					if (userRoleKeywords == "" || roleName == ""
 							|| $("#errorrolename").html() != ""

@@ -1,7 +1,9 @@
 package com.service.guanService;
 
+import java.util.HashMap;
 import java.util.List;
 
+import com.entity.TbRole;
 import com.entity.UserTab;
 /**
  * 
@@ -28,4 +30,21 @@ public interface UserServicePort {
 	 * @param ut
 	 */
 	public String updateUser(UserTab ut);
+	/**
+	 * 验证用户手机号是否唯一
+	 * @param data
+	 * @return
+	 */
+	public String queryUserCall(String data);
+	/**
+	 * 生成添加员工的角色树
+	 * @param id
+	 * @return
+	 */
+	public List<HashMap<String,Object>> queryTbRole(String data);
+	/**
+	 * 通过员工名称进行模糊查询
+	 * @return
+	 */
+	public List<UserTab> queryDimUserName(String userName);
 }

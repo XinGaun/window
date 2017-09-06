@@ -87,21 +87,30 @@
                     <li iconCls="icon-application-osx-error"><a href="javascript:void(0)" data-icon="icon-application-osx-error" data-link="temp/layout-3.html" iframe="0">导航标题</a></li>
                 </ul>
             </div>
+            <shiro:hasPermission name="system">
             <div title="权限管理" data-options="iconCls:'icon-wrench'" style="padding:5px;">  	
     			<ul class="easyui-tree wu-side-tree">
-    				<shiro:hasPermission name="ok"> 
+    				<shiro:hasPermission name="staff_management">
                 	<li iconCls="icon-chart-organisation">                
                 		<a  data-link="/window/User/zhuanUser.do" >员工管理</a>               	
                 	</li>
-                	</shiro:hasPermission>  
+                	</shiro:hasPermission>
+                	<shiro:hasPermission name="role_management">
                 	<li iconCls="icon-chart-organisation">                
                 		<a  data-link="/window/tbrole/zhuanTbRole.do" >角色管理</a>               	
                 	</li>
+                	</shiro:hasPermission>
+                	<shiro:hasPermission name="authority">
                 	<li iconCls="icon-chart-organisation">                
                 		<a  data-link="/window/TbPower/zhuanTbPower.do" >权限管理</a>               	
                 	</li>
+                	</shiro:hasPermission>
+                	<li iconCls="icon-chart-organisation">                
+                		<a  data-link="../financingproject/addProject.jsp" >aaa</a>               	
+                	</li>
                 </ul>
             </div>
+            </shiro:hasPermission>
         </div>
     </div>		
     <!-- end of sidebar -->    

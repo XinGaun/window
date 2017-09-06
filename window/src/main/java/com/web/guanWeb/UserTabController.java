@@ -1,15 +1,17 @@
 package com.web.guanWeb;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,12 @@ import com.entity.UserTab;
 import com.service.guanService.UserServicePort;
 import com.util.MD5;
 /**
- * User控制器层
- * @author Administrator
- *
+ * 
+* @Title: TbPowerController.java  
+* @Package com.web.guanWeb  
+* @Description: TODO(接收传输用户数据)  
+* @author 用户控制层  
+* @date 2017年8月31日
  */
 @Controller
 @RequestMapping("/User")
@@ -36,7 +41,7 @@ public class UserTabController {
 	 * 使用shiro验证用户登录
 	 */
 	@RequestMapping("/verification")
-	public String verification(@RequestBody String data,HttpServletResponse response){
+	public String verification(@RequestBody String data,HttpServletResponse response,HttpServletRequest request){
 		response.setContentType("text/html;charset=UTF-8");//设置返回编码格式
 		//获得当前用户对象
 		UserTab userTab = JSON.parseObject(data,UserTab.class);
@@ -74,7 +79,11 @@ public class UserTabController {
 				return "error";
 			}
 		}
+		
 		try {
+			
+			UserTab user =(UserTab) subject.getPrincipal();//获得授权时放入的用户
+			request.getSession().setAttribute("user",user);//将用户放入Session
 			response.getWriter().write(JSON.toJSONString("登录成功!"));
 			response.getWriter().flush();
 			response.getWriter().close();
@@ -124,4 +133,34 @@ public class UserTabController {
 		UserTab userTab = JSON.parseObject(data,UserTab.class);	
 		return userServicePort.updateUser(userTab);
 	}
+	/**
+	 * 验证用户手机号是否重复
+	 * @param data
+	 * @return
+	 */
+	@RequestMapping("/queryUserCall")
+	@ResponseBody
+	public String queryUserCall(@RequestBody String data){
+		return userServicePort.queryUserCall(data);
+	}
+	/**
+	 * 生成添加员工里的角色树
+	 * @return
+	 */
+	@RequestMapping("/queryTbRole")
+	@ResponseBody
+	public List<HashMap<String,Object>> queryTbRole(@RequestBody String data){		
+		return userServicePort.queryTbRole(data);
+	};
+	/**
+	 * 根据员工名称实现模糊查询员工信息
+	 * @param userName
+	 * @return
+	 */
+	@RequestMapping("/queryDimUserName")
+	@ResponseBody
+	public List<UserTab> queryDimUserName(String userName){
+		return userServicePort.queryDimUserName(userName);
+	}
+	
 }

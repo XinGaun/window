@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.guanDao.FinancingDaoPort">
+	<!-- 添加融资项目 -->	
+	<insert id="addtabProjectFinancing" useGeneratedKeys="false" parameterType="com.entity.TabProjectFinancing">
+		insert into tab_project_financing(project_id,project_user_id,project_name,project_address,project_subject,project_industry,project_lastyearturnover,project_netasset,project_purpose,project_investmentintent,project_bringsdata,project_status)  values(seq_project_financing.nextval,#{projectUserId},#{projectName},#{projectAddress},#{projectSubject},#{projectIndustry},#{projectLastyearturnover},#{projectNetasset},#{projectPurpose},#{intentionStr},#{projectBringsdataStr},'未审核')
+	</insert>
+	<!-- 添加融资项目详情表 -->
+	<insert id="addtabProjectDetails" useGeneratedKeys="false" parameterType="com.entity.TabProjectDetails">
+		insert into tab_project_details(project_id,project_summarize,project_advantage,project_remark,project_enddate,project_minmoney,project_maxmoney,project_countmoney,project_picture,project_file) values(#{projectId},#{projectSummarize},#{projectAdvantage},#{projectRemark},#{projectEnddate},#{projectMinmoney},#{projectMaxmoney},#{projectCountmoney},#{projectPictureStr},#{projectFileStr})
+	</insert>
+	<!-- 查询融资项目表 -->
+	<select id="queryProjectFinancing" resultType="com.entity.TabProjectFinancing" parameterType="com.entity.TabProjectFinancing">
+		select * from tab_project_financing where project_name=#{projectName} and project_user_id = #{projectUserId} order by project_id desc 
+	</select>
+</mapper>

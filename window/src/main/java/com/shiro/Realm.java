@@ -1,5 +1,6 @@
 package com.shiro;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -31,10 +32,15 @@ public class Realm extends AuthorizingRealm{
 	 * 为用户授权
 	 */
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection PC) {
 		// TODO Auto-generated method stub
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.addStringPermission("ok");
+		UserTab user =(UserTab)PC.getPrimaryPrincipal();
+		List<HashMap<String,Object>> userMap = userdaoport.queryCallUserRolePower(user);
+		for(int i=0;i<userMap.size();i++){
+			info.addStringPermission(userMap.get(i).get("POWER_KEY").toString());
+		}
+
 		return info;
 	}
 	/**

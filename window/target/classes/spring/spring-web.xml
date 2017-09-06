@@ -54,6 +54,12 @@
 				/User/verification.do = anon
 				/bootstrap-table/** = anon
 				/bootstrap-3.3.7-dist/** = anon
+				
+				<!-- 发起融资项目测试 -->
+				/financingproject/** =anon
+				/Financing/addFinancing.do =anon
+				/upload/** =anon
+				
 				/css/** = anon
 				/easyui/** = anon
 				/html/** = anon

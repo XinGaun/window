@@ -5,7 +5,7 @@
  <!-- 角色接口实现类 -->
 <mapper namespace="com.dao.guanDao.TbRoleDaoPort">	
 	<!-- 查询角色信息 -->
-	<select id="querytbRole" resultType="com.entity.TbRole" parameterType="com.entity.TbRole">
+	<select id="querytbRole"  resultType="com.entity.TbRole" parameterType="com.entity.TbRole">
 		select role_id,role_name,user_role_keywords,user_role_status from tb_role where role_id>0
 		<if test="roleId!=0">  
 			 and role_id != #{roleId}

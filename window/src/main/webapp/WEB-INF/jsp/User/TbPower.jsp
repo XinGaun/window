@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,10 +21,16 @@
 			<div id="wu-toolbar2">
 				<div class="wu-toolbar-search"
 					style="padding-top: 20px; height: 50px;">
+						<shiro:hasPermission name="updatePower">
 					<a id="UpdatePower" href="#" class="easyui-linkbutton"
-						data-options="iconCls:'icon-man'">修改权限</a> <a id="addUPower"
+						data-options="iconCls:'icon-man'">修改权限</a>
+						</shiro:hasPermission>
+						<shiro:hasPermission name="addPower">
+						 <a id="addUPower"
 						href="#" class="easyui-linkbutton"
-						data-options="iconCls:'icon-man'">添加权限</a> <label>权限名称：</label><input
+						data-options="iconCls:'icon-man'">添加权限</a>
+						</shiro:hasPermission>
+						 <label>权限名称：</label><input
 						id="quanxianmohu" class="wu-text" style="width: 100px"> <a
 						href="#" class="easyui-linkbutton" iconCls="icon-search"
 						id="quanxianmh">开始检索</a>
@@ -180,16 +187,7 @@
 	<!-- End of easyui-dialog -->
 	<script type="text/javascript">	
 		
-		//生称父级下拉菜单
-		$('#powerPid').combobox({    
-	    	url:'/window/TbPower/queryTbPower.do',    
-	   		valueField:'powerId',    
-	   		textField:'powerName' ,
-	   		panelHeight:"auto",
-		  	editable:false
-		  	
-
-		}); 
+		
 		
 		
 		
@@ -242,6 +240,16 @@
 		});
 		//打开修改权限模态窗
 		$("#UpdatePower").click(function(){
+			//生称父级下拉菜单
+			$('#powerPid').combobox({    
+		    	url:'/window/TbPower/queryTbPower.do',    
+		   		valueField:'powerId',    
+		   		textField:'powerName' ,
+		   		panelHeight:"auto",
+			  	editable:false
+			  	
+
+			}); 
 			var row = $('#wu-quan').datagrid('getSelected');
 			if(!row){
 				alert("请选择一个权限进行修改!");
@@ -326,6 +334,16 @@
 		});
 		//打开模态窗
 		$("#addUPower").click(function(){
+			//生称父级下拉菜单
+			$('#powerPid').combobox({    
+		    	url:'/window/TbPower/queryTbPower.do',    
+		   		valueField:'powerId',    
+		   		textField:'powerName' ,
+		   		panelHeight:"auto",
+			  	editable:false
+			  	
+
+			}); 
 			$('#quan').window('open');
 			
 		});
